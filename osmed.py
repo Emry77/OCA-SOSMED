@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import urllib.parse
 from getpass import getpass
 import os
+import time
 
 def get_redirected_url(url):
     """Mengambil URL setelah redirect, jika ada."""
@@ -26,11 +27,12 @@ def get_google_search_results(query):
     """Mengambil hasil pencarian Google berdasarkan query."""
     try:
         headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, seperti Gecko) Chrome/91.0.4472.124 Safari/537.36"
         }
         response = requests.get(query, headers=headers)
         response.raise_for_status()
         soup = BeautifulSoup(response.text, 'html.parser')
+        time.sleep(5)  # Tambahkan delay 5 detik antar permintaan untuk menghindari error 429
         return soup.find_all('a')
     except requests.exceptions.RequestException as e:
         print(f"Error saat mengambil hasil pencarian: {e}")
